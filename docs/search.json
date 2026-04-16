@@ -11,14 +11,14 @@
     "href": "index.html",
     "title": "Breakout Trading Strategy — Backtest & Analysis",
     "section": "",
-    "text": "This strategy implements a Donchian Channel breakout system on USO (United States Oil Fund ETF). Each trading day, we check whether the closing price breaks above the 20-day high (long breakout) or below the 20-day low (short breakout). When a breakout is detected, we enter a position of 100 shares in the breakout direction, set a profit target at 2× the 14-day ATR from the entry price, a stop-loss at 1× ATR, and a 10-trading-day timeout — if neither the target nor the stop is hit within 10 days, we exit at market close. The strategy is backtested out-of-sample on data from June 2023 to April 2025, with the prior period (Jan 2022–June 2023) reserved for parameter calibration, ensuring no data snooping."
+    "text": "0\n    Total Trades\n  \n  \n    0%\n    Win Rate\n  \n  \n    0\n    Sharpe Ratio\n  \n  \n    0%\n    Max Drawdown\n  \n  \n    0\n    Profit Factor"
   },
   {
     "objectID": "index.html#strategy-logic",
     "href": "index.html#strategy-logic",
     "title": "Breakout Trading Strategy — Backtest & Analysis",
-    "section": "",
-    "text": "This strategy implements a Donchian Channel breakout system on USO (United States Oil Fund ETF). Each trading day, we check whether the closing price breaks above the 20-day high (long breakout) or below the 20-day low (short breakout). When a breakout is detected, we enter a position of 100 shares in the breakout direction, set a profit target at 2× the 14-day ATR from the entry price, a stop-loss at 1× ATR, and a 10-trading-day timeout — if neither the target nor the stop is hit within 10 days, we exit at market close. The strategy is backtested out-of-sample on data from June 2023 to April 2025, with the prior period (Jan 2022–June 2023) reserved for parameter calibration, ensuring no data snooping."
+    "section": "Strategy Logic",
+    "text": "Strategy Logic\nThis strategy implements a Donchian Channel breakout system on USO (United States Oil Fund ETF). Each trading day, we check whether the closing price breaks above the 20-day high (long breakout) or below the 20-day low (short breakout). When a breakout is detected, we enter a position of 100 shares in the breakout direction, set a profit target at 2× the 14-day ATR from the entry price, a stop-loss at 1× ATR, and a 10-trading-day timeout — if neither the target nor the stop is hit within 10 days, we exit at market close. The strategy is backtested out-of-sample on data from June 2023 to April 2025, with the prior period (Jan 2022–June 2023) reserved for parameter calibration, ensuring no data snooping."
   },
   {
     "objectID": "index.html#asset-selection",
