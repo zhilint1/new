@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>new</title>
+<title>Breakout Trading Strategy — Backtest &amp; Analysis – Breakout Strategy</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">new</span>
+    <span class="navbar-title">Breakout Strategy</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -96,10 +96,6 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link active" href="./index.html" aria-current="page"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
-  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -111,15 +107,31 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#strategy-logic" id="toc-strategy-logic" class="nav-link active" data-scroll-target="#strategy-logic">Strategy Logic</a></li>
+  <li><a href="#asset-selection" id="toc-asset-selection" class="nav-link" data-scroll-target="#asset-selection">Asset Selection</a></li>
+  <li><a href="#breakout-definition" id="toc-breakout-definition" class="nav-link" data-scroll-target="#breakout-definition">Breakout Definition</a></li>
+  <li><a href="#performance-summary" id="toc-performance-summary" class="nav-link" data-scroll-target="#performance-summary">Performance Summary</a></li>
+  <li><a href="#equity-curve" id="toc-equity-curve" class="nav-link" data-scroll-target="#equity-curve">Equity Curve</a></li>
+  <li><a href="#drawdown" id="toc-drawdown" class="nav-link" data-scroll-target="#drawdown">Drawdown</a></li>
+  <li><a href="#breakout-signals-trade-entriesexits" id="toc-breakout-signals-trade-entriesexits" class="nav-link" data-scroll-target="#breakout-signals-trade-entriesexits">Breakout Signals &amp; Trade Entries/Exits</a></li>
+  <li><a href="#trade-return-distribution" id="toc-trade-return-distribution" class="nav-link" data-scroll-target="#trade-return-distribution">Trade Return Distribution</a></li>
+  <li><a href="#trade-outcome-breakdown" id="toc-trade-outcome-breakdown" class="nav-link" data-scroll-target="#trade-outcome-breakdown">Trade Outcome Breakdown</a></li>
+  <li><a href="#trade-blotter" id="toc-trade-blotter" class="nav-link" data-scroll-target="#trade-blotter">Trade Blotter</a></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">new</h1>
+<h1 class="title">Breakout Trading Strategy — Backtest &amp; Analysis</h1>
 </div>
 
 
@@ -136,10 +148,87 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This is a Quarto website.</p>
-<p>To learn more about Quarto websites visit <a href="https://quarto.org/docs/websites" class="uri">https://quarto.org/docs/websites</a>.</p>
+<section id="strategy-logic" class="level2">
+<h2 class="anchored" data-anchor-id="strategy-logic">Strategy Logic</h2>
+<p>This strategy implements a <strong>Donchian Channel breakout system</strong> on USO (United States Oil Fund ETF). Each trading day, we check whether the closing price breaks above the 20-day high (long breakout) or below the 20-day low (short breakout). When a breakout is detected, we enter a position of 100 shares in the breakout direction, set a profit target at 2× the 14-day ATR from the entry price, a stop-loss at 1× ATR, and a 10-trading-day timeout — if neither the target nor the stop is hit within 10 days, we exit at market close. The strategy is backtested out-of-sample on data from June 2023 to April 2025, with the prior period (Jan 2022–June 2023) reserved for parameter calibration, ensuring no data snooping.</p>
+</section>
+<section id="asset-selection" class="level2">
+<h2 class="anchored" data-anchor-id="asset-selection">Asset Selection</h2>
+<p><strong>USO (United States Oil Fund ETF)</strong> was selected because crude oil is one of the most actively traded commodities with strong momentum and mean-reversion regimes driven by macro catalysts (OPEC decisions, inventory reports, geopolitical events). A scan of multiple ETFs confirmed that USO exhibited frequent, clean breakouts from consolidation ranges over the past three years, making it well-suited for a channel-based breakout strategy.</p>
+</section>
+<section id="breakout-definition" class="level2">
+<h2 class="anchored" data-anchor-id="breakout-definition">Breakout Definition</h2>
+<ul>
+<li><strong>Indicator:</strong> Donchian Channel with a 20-day lookback period</li>
+<li><strong>Long breakout:</strong> Close &gt; highest high of the prior 20 trading days</li>
+<li><strong>Short breakout:</strong> Close &lt; lowest low of the prior 20 trading days</li>
+<li><strong>Profit target:</strong> Entry price ± 2.0 × ATR(14)</li>
+<li><strong>Stop-loss:</strong> Entry price ∓ 1.0 × ATR(14)</li>
+<li><strong>Timeout:</strong> 10 trading days — exit at market close if neither target nor stop is triggered</li>
+<li><strong>Position size:</strong> 100 shares per trade</li>
+<li><strong>No commissions or slippage modeled</strong> (assumption: liquid ETF with tight spreads)</li>
+</ul>
+</section>
+<section id="performance-summary" class="level2">
+<h2 class="anchored" data-anchor-id="performance-summary">Performance Summary</h2>
+<iframe src="summary_table.html" width="100%" height="400" style="border:none;"></iframe>
+</section>
+<section id="equity-curve" class="level2">
+<h2 class="anchored" data-anchor-id="equity-curve">Equity Curve</h2>
+<iframe src="equity_curve.html" width="100%" height="500" style="border:none;"></iframe>
+</section>
+<section id="drawdown" class="level2">
+<h2 class="anchored" data-anchor-id="drawdown">Drawdown</h2>
+<iframe src="drawdown.html" width="100%" height="400" style="border:none;"></iframe>
+</section>
+<section id="breakout-signals-trade-entriesexits" class="level2">
+<h2 class="anchored" data-anchor-id="breakout-signals-trade-entriesexits">Breakout Signals &amp; Trade Entries/Exits</h2>
+<iframe src="breakout_signals.html" width="100%" height="750" style="border:none;"></iframe>
+</section>
+<section id="trade-return-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="trade-return-distribution">Trade Return Distribution</h2>
+<iframe src="trade_distribution.html" width="100%" height="450" style="border:none;"></iframe>
+</section>
+<section id="trade-outcome-breakdown" class="level2">
+<h2 class="anchored" data-anchor-id="trade-outcome-breakdown">Trade Outcome Breakdown</h2>
+<iframe src="trade_outcomes.html" width="100%" height="400" style="border:none;"></iframe>
+</section>
+<section id="trade-blotter" class="level2">
+<h2 class="anchored" data-anchor-id="trade-blotter">Trade Blotter</h2>
+<p>Download: <a href="trades.csv">trades.csv</a></p>
+<iframe src="blotter_table.html" width="100%" height="600" style="border:none;"></iframe>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p><strong>Strengths:</strong></p>
+<ul>
+<li>The strategy is fully systematic and transparent — all parameters are explicitly defined.</li>
+<li>Walk-forward design (train on 2022–mid 2023, test on mid 2023–2025) prevents data snooping.</li>
+<li>The 2:1 reward-to-risk ratio (profit target = 2× ATR, stop = 1× ATR) is a sound risk management principle.</li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul>
+<li>Win rate of ~43% is below 50%, which is typical for breakout strategies but requires large winners to compensate.</li>
+<li>The annualized Sharpe ratio is negative (-3.07) because the strategy’s modest 0.47% annual return is well below the 3.75% risk-free rate. In a lower-rate environment, results would look better.</li>
+<li>16 out of 30 trades hit stop-loss, indicating many false breakouts — a known challenge with Donchian channels in range-bound markets.</li>
+</ul>
+<p><strong>Risks:</strong></p>
+<ul>
+<li>Crude oil can enter extended consolidation phases where breakouts repeatedly fail.</li>
+<li>No transaction cost modeling — real performance would be slightly worse.</li>
+<li>Static 20-day channel and 14-day ATR parameters may not be optimal across all market regimes.</li>
+</ul>
+<p><strong>Improvements:</strong></p>
+<ul>
+<li>Add a <strong>volume confirmation filter</strong> (only enter if breakout bar volume &gt; 1.5× average) to reduce false breakouts.</li>
+<li>Implement <strong>adaptive channel width</strong> based on recent volatility regime.</li>
+<li>Use a <strong>trailing stop</strong> instead of a fixed stop to capture larger trends.</li>
+<li>Expand to <strong>multiple assets</strong> and trade the portfolio to diversify signal risk.</li>
+<li>Test <strong>longer Donchian periods</strong> (e.g., 55-day) which may produce fewer but higher-quality breakouts.</li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

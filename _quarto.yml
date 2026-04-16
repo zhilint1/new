@@ -1,22 +1,19 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - "*.html"
+    - "*.csv"
 
 website:
-  title: "new"
+  title: "Breakout Strategy"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
 
 format:
   html:
-    theme:
-      - cosmo
-      - brand
+    theme: cosmo
     css: styles.css
     toc: true
-
-
-

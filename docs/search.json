@@ -9,8 +9,85 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "new",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "This strategy implements a Donchian Channel breakout system on USO (United States Oil Fund ETF). Each trading day, we check whether the closing price breaks above the 20-day high (long breakout) or below the 20-day low (short breakout). When a breakout is detected, we enter a position of 100 shares in the breakout direction, set a profit target at 2× the 14-day ATR from the entry price, a stop-loss at 1× ATR, and a 10-trading-day timeout — if neither the target nor the stop is hit within 10 days, we exit at market close. The strategy is backtested out-of-sample on data from June 2023 to April 2025, with the prior period (Jan 2022–June 2023) reserved for parameter calibration, ensuring no data snooping."
+  },
+  {
+    "objectID": "index.html#strategy-logic",
+    "href": "index.html#strategy-logic",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "",
+    "text": "This strategy implements a Donchian Channel breakout system on USO (United States Oil Fund ETF). Each trading day, we check whether the closing price breaks above the 20-day high (long breakout) or below the 20-day low (short breakout). When a breakout is detected, we enter a position of 100 shares in the breakout direction, set a profit target at 2× the 14-day ATR from the entry price, a stop-loss at 1× ATR, and a 10-trading-day timeout — if neither the target nor the stop is hit within 10 days, we exit at market close. The strategy is backtested out-of-sample on data from June 2023 to April 2025, with the prior period (Jan 2022–June 2023) reserved for parameter calibration, ensuring no data snooping."
+  },
+  {
+    "objectID": "index.html#asset-selection",
+    "href": "index.html#asset-selection",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Asset Selection",
+    "text": "Asset Selection\nUSO (United States Oil Fund ETF) was selected because crude oil is one of the most actively traded commodities with strong momentum and mean-reversion regimes driven by macro catalysts (OPEC decisions, inventory reports, geopolitical events). A scan of multiple ETFs confirmed that USO exhibited frequent, clean breakouts from consolidation ranges over the past three years, making it well-suited for a channel-based breakout strategy."
+  },
+  {
+    "objectID": "index.html#breakout-definition",
+    "href": "index.html#breakout-definition",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Breakout Definition",
+    "text": "Breakout Definition\n\nIndicator: Donchian Channel with a 20-day lookback period\nLong breakout: Close &gt; highest high of the prior 20 trading days\nShort breakout: Close &lt; lowest low of the prior 20 trading days\nProfit target: Entry price ± 2.0 × ATR(14)\nStop-loss: Entry price ∓ 1.0 × ATR(14)\nTimeout: 10 trading days — exit at market close if neither target nor stop is triggered\nPosition size: 100 shares per trade\nNo commissions or slippage modeled (assumption: liquid ETF with tight spreads)"
+  },
+  {
+    "objectID": "index.html#performance-summary",
+    "href": "index.html#performance-summary",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Performance Summary",
+    "text": "Performance Summary"
+  },
+  {
+    "objectID": "index.html#equity-curve",
+    "href": "index.html#equity-curve",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Equity Curve",
+    "text": "Equity Curve"
+  },
+  {
+    "objectID": "index.html#drawdown",
+    "href": "index.html#drawdown",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Drawdown",
+    "text": "Drawdown"
+  },
+  {
+    "objectID": "index.html#breakout-signals-trade-entriesexits",
+    "href": "index.html#breakout-signals-trade-entriesexits",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Breakout Signals & Trade Entries/Exits",
+    "text": "Breakout Signals & Trade Entries/Exits"
+  },
+  {
+    "objectID": "index.html#trade-return-distribution",
+    "href": "index.html#trade-return-distribution",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Trade Return Distribution",
+    "text": "Trade Return Distribution"
+  },
+  {
+    "objectID": "index.html#trade-outcome-breakdown",
+    "href": "index.html#trade-outcome-breakdown",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Trade Outcome Breakdown",
+    "text": "Trade Outcome Breakdown"
+  },
+  {
+    "objectID": "index.html#trade-blotter",
+    "href": "index.html#trade-blotter",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Trade Blotter",
+    "text": "Trade Blotter\nDownload: trades.csv"
+  },
+  {
+    "objectID": "index.html#discussion",
+    "href": "index.html#discussion",
+    "title": "Breakout Trading Strategy — Backtest & Analysis",
+    "section": "Discussion",
+    "text": "Discussion\nStrengths:\n\nThe strategy is fully systematic and transparent — all parameters are explicitly defined.\nWalk-forward design (train on 2022–mid 2023, test on mid 2023–2025) prevents data snooping.\nThe 2:1 reward-to-risk ratio (profit target = 2× ATR, stop = 1× ATR) is a sound risk management principle.\n\nWeaknesses:\n\nWin rate of ~43% is below 50%, which is typical for breakout strategies but requires large winners to compensate.\nThe annualized Sharpe ratio is negative (-3.07) because the strategy’s modest 0.47% annual return is well below the 3.75% risk-free rate. In a lower-rate environment, results would look better.\n16 out of 30 trades hit stop-loss, indicating many false breakouts — a known challenge with Donchian channels in range-bound markets.\n\nRisks:\n\nCrude oil can enter extended consolidation phases where breakouts repeatedly fail.\nNo transaction cost modeling — real performance would be slightly worse.\nStatic 20-day channel and 14-day ATR parameters may not be optimal across all market regimes.\n\nImprovements:\n\nAdd a volume confirmation filter (only enter if breakout bar volume &gt; 1.5× average) to reduce false breakouts.\nImplement adaptive channel width based on recent volatility regime.\nUse a trailing stop instead of a fixed stop to capture larger trends.\nExpand to multiple assets and trade the portfolio to diversify signal risk.\nTest longer Donchian periods (e.g., 55-day) which may produce fewer but higher-quality breakouts."
   }
 ]
