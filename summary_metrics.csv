@@ -1,12 +1,12 @@
 Metric,Value
-Total trades,30
-Win rate,43.33%
-Avg return/trade,0.4475%
-Total return,0.8757%
-Annual return (GMRR),0.4694%
-Annual volatility,1.0700%
-Sharpe ratio (rf=3.75%),-3.0659
-Sortino ratio,-2.7995
-Max drawdown,-1.1120%
-Avg holding period,6.5 days
-Profit factor,1.32
+Total trades,15
+Win rate,53.33%
+Avg return/trade,0.7101%
+Total return,3.8060%
+Annual return (GMRR),1.1492%
+Annual volatility,1.8443%
+Sharpe ratio (rf=3.75%),-1.4102
+Sortino ratio,-0.7946
+Max drawdown,-1.2932%
+Avg holding period,8.9 days
+Profit factor,2.13
